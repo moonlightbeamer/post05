@@ -11,11 +11,11 @@ import (
 
 // Connection details
 var (
-	Hostname = ""
-	Port     = 2345
-	Username = ""
-	Password = ""
-	Database = ""
+	Hostname = "mushy-fox-469.5xj.cockroachlabs.cloud"
+	Port     = 26257
+	Username = "lin"
+	Password = "ARKgDKK5sMlPOijptuSNcQ"
+	Database = "go"
 )
 
 // Userdata is for holding full user data
@@ -30,8 +30,8 @@ type Userdata struct {
 
 func openConnection() (*sql.DB, error) {
 	// connection string
-	conn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		Hostname, Port, Username, Password, Database)
+	conn := fmt.Sprintf("postgresql://%[1]s:%[2]s@%[3]s:%[4]d/%[5]s?sslmode=verify-full",
+		Username, Password, Hostname, Port, Database)
 
 	// open database
 	db, err := sql.Open("postgres", conn)
@@ -54,8 +54,8 @@ func exists(username string) int {
 	defer db.Close()
 
 	userID := -1
-	statement := fmt.Sprintf(`SELECT "id" FROM "users" where username = '%s'`, username)
-	rows, err := db.Query(statement)
+	query_string := fmt.Sprintf(`SELECT "id" FROM "users" WHERE username = '%s'`, username)
+	rows, err := db.Query(query_string)
 
 	for rows.Next() {
 		var id int
@@ -85,7 +85,7 @@ func AddUser(d Userdata) int {
 
 	userID := exists(d.Username)
 	if userID != -1 {
-		fmt.Println("User already exists:", Username)
+		fmt.Println("User already exists:", d.Username)
 		return -1
 	}
 
@@ -177,11 +177,11 @@ func ListUsers() ([]Userdata, error) {
 		var surname string
 		var description string
 		err = rows.Scan(&id, &username, &name, &surname, &description)
-		temp := Userdata{ID: id, Username: username, Name: name, Surname: surname, Description: description}
-		Data = append(Data, temp)
 		if err != nil {
 			return Data, err
 		}
+		temp := Userdata{ID: id, Username: username, Name: name, Surname: surname, Description: description}
+		Data = append(Data, temp)
 	}
 	defer rows.Close()
 	return Data, nil
