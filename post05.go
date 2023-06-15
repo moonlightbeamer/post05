@@ -199,3 +199,27 @@ func UpdateUser(d Userdata) error {
 
 	return nil
 }
+
+func FindUser(i int) (string, error) {
+	db, err := openConnection()
+	if err != nil {
+		return "", err
+	}
+	defer db.Close()
+    
+	search_string := `SELECT "username" FROM "users" WHERE id=$1`
+	rows, err := db.Query(search_string, i)
+	if err != nil {
+		return "", err
+	}
+    var username string
+	for rows.Next() {
+		err = rows.Scan(&username)
+		if err != nil {
+			fmt.Println("Scan", err)
+			return "", err
+		}
+	}
+	defer rows.Close()
+	return username, nil
+}
