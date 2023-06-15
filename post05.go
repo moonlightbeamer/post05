@@ -21,7 +21,7 @@ var (
 // Userdata is for holding full user data
 // Userdata table + Username
 type Userdata struct {
-	ID          int
+	//ID          int
 	Username    string
 	Name        string
 	Surname     string
