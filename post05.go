@@ -200,7 +200,7 @@ func UpdateUser(d Userdata) error {
 	return nil
 }
 
-func FindUser(i int) (string, error) {
+func SearchUser(i int) (string, error) {
 	db, err := openConnection()
 	if err != nil {
 		return "", err
