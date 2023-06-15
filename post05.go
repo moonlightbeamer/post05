@@ -11,11 +11,11 @@ import (
 
 // Connection details
 var (
-	Hostname = "mushy-fox-469.5xj.cockroachlabs.cloud"
+	Hostname = "mushy-fox"
 	Port     = 26257
-	Username = "lin"
-	Password = "ARKgDKK5sMlPOijptuSNcQ"
-	Database = "go"
+	Username = ""
+	Password = ""
+	Database = ""
 )
 
 // Userdata is for holding full user data
